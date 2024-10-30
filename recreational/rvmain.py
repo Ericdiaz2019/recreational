@@ -12,7 +12,8 @@ def runRvSpiders():
         subprocess.run(['scrapy', 'crawl', spider])
 
 def runBoatSpiders():
-    boatSpiders = ['buckeyesportscenter', 'desmaspider', 'futrellmarine', 'marinekentu', 'lodderspider','spiderviking', 'wickspider', 'spiderlanding', 'settlespider', 'spiderboat', 'spiderford', 'spiderwakeside']
+    boatSpiders = ['buckeyesportscenter', 'desmaspider', 'futrellmarine', 'marinekentu', 'lodderspider','spiderviking', 'wickspider', 'spiderlanding', 'settlespider', 'spiderboat', 'spiderford', 'spiderwakeside','revolutionMarine','montanaBoatCenter',
+                   'unionMarine','valleyMarine','']
 
     for spider in boatSpiders:
         subprocess.run(['scrapy', 'crawl', spider])

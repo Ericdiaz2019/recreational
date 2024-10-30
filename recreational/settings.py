@@ -20,12 +20,17 @@ DOWNLOAD_HANDLERS = {
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 LOG_LEVEL = 'INFO'
 
+
+
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "recreational (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
-
+ROBOTSTXT_OBEY = False
+RETRY_ENABLED = True
+RETRY_TIMES = 5  # Increase if necessary
+DOWNLOAD_TIMEOUT = 30  # Increase the timeout
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 5
 PLAYWRIGHT_MAX_CONTEXTS = 7
