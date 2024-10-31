@@ -4,6 +4,7 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -101,3 +102,13 @@ class RecreationalDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+class ProxyMiddleware:
+    def process_request(self, request, spider):
+        proxies = [
+            "http://DHMR115563:AIJKMQXZ@134.195.230.104:6066",
+            "http://DHMR115563:AIJKMQXZ@134.195.229.200:5261",
+            "http://DHMR115563:AIJKMQXZ@216.185.221.198:6906",
+        ]
+        proxy = random.choice(proxies)
+        request.meta['proxy'] = proxy

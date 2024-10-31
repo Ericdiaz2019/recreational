@@ -363,7 +363,12 @@ def find_model(unit_title):
 
     return brand
 
-
+proxies = [
+    {"server": "134.195.230.104:6066", "username": "DHMR115563", "password": "AIJKMQXZ"},
+    {"server": "134.195.229.200:5261", "username": "DHMR115563", "password": "AIJKMQXZ"},
+    {"server": "216.185.221.198:6906", "username": "DHMR115563", "password": "AIJKMQXZ"},
+    # Add more proxies as necessary
+]
 
 
 class campersinn(scrapy.Spider):
@@ -391,18 +396,20 @@ class campersinn(scrapy.Spider):
         }
 
         for category_name, link_url in web_links.items():
-            yield scrapy.Request(
-                url=link_url,
-                meta={
-                    'playwright': True,
-                    'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "span.total-units"),
-                    ],
-                    'playwright_context': 'default',  # Use default browser context
-                    'category_name': category_name,
-                },
-                callback=self.parse
-            )
+
+                yield scrapy.Request(
+                    url=link_url,
+                    meta={
+                        'playwright': True,
+                        'playwright_page_methods': [
+                            PageMethod("wait_for_selector", "span.total-units"),
+                        ],
+                        'playwright_context': 'default',
+                        'page_goto_kwargs': {'timeout': 60000},   # Use default browser context
+                        'category_name': category_name,
+                    },
+                    callback=self.parse
+                )
 
     def parse(self, response):
         self.logger.info(f"Processing category {response.meta['category_name']}")
@@ -424,14 +431,12 @@ class campersinn(scrapy.Spider):
                     'playwright_page_methods': [
                         PageMethod("wait_for_selector", "li.standard-template-v2"),
                     ],
-                    'playwright_context': 'default',  # Use default browser context
                     'category_name': response.meta['category_name'],
                 },
                 callback=self.parse_units,
-                errback=self.handle_error,  # Error handling in case of failure
+                errback=self.handle_error,
                 dont_filter=True
             )
-
         
     
     def parse_units(self, response):

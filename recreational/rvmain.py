@@ -13,7 +13,7 @@ def runRvSpiders():
 
 def runBoatSpiders():
     boatSpiders = ['buckeyesportscenter', 'desmaspider', 'futrellmarine', 'marinekentu', 'lodderspider','spiderviking', 'wickspider', 'spiderlanding', 'settlespider', 'spiderboat', 'spiderford', 'spiderwakeside','revolutionMarine','montanaBoatCenter',
-                   'unionMarine','valleyMarine','']
+                   'unionMarine','valleyMarine']
 
     for spider in boatSpiders:
         subprocess.run(['scrapy', 'crawl', spider])
@@ -33,7 +33,7 @@ def runRvMain():
     load_data_daily_pull(f'DailyRun/data {today}.csv','DailyPull','Yes')
 
 
-load_data_daily_pull_boat(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
+#load_data_daily_pull_boat(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
 #runBoatMain()
-#runRvMain()
+runRvMain()
 #rvValidate()
