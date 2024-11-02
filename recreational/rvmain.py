@@ -13,7 +13,7 @@ def runRvSpiders():
 
 def runBoatSpiders():
     boatSpiders = ['buckeyesportscenter', 'desmaspider', 'futrellmarine', 'marinekentu', 'lodderspider','spiderviking', 'wickspider', 'spiderlanding', 'settlespider', 'spiderboat', 'spiderford', 'spiderwakeside','revolutionMarine','montanaBoatCenter',
-                   'unionMarine','valleyMarine']
+                   'unionMarine','valleyMarine','waterWorld','riverCity','harrisonMarine','hawkeye','clearLake','slcBoats','blmBoats','mattasMarine','westCost','actionWater','andersonPower']
 
     for spider in boatSpiders:
         subprocess.run(['scrapy', 'crawl', spider])
@@ -22,8 +22,7 @@ def runBoatSpiders():
 def runBoatMain():
     runBoatSpiders()
     boatCreateOneFile()
-    #boatValidate()
-    #load_data_daily_pull(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
+    load_data_daily_pull_boat(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
 
 
 def runRvMain():
@@ -33,7 +32,6 @@ def runRvMain():
     load_data_daily_pull(f'DailyRun/data {today}.csv','DailyPull','Yes')
 
 
-#load_data_daily_pull_boat(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
-#runBoatMain()
+runBoatMain()
 runRvMain()
-#rvValidate()
+rvValidate()
