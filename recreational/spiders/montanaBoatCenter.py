@@ -7,6 +7,11 @@ import datetime
 import csv
 import re
 import os
+import random
+
+# Define a function to generate a string of 5 random numbers without spaces
+def generate_random_numbers():
+    return ''.join(str(random.randint(1, 100)) for _ in range(5))
 today = datetime.date.today()
 
 boat_naming = {
@@ -130,7 +135,7 @@ class montanaBoatCenter(scrapy.Spider):
             try:
                 boat_stock = boats.find('li', class_='stockno').find('span', class_='unitValue').text
             except:
-                boat_stock = 'N/A'
+                boat_stock = generate_random_numbers()
             try:
                 boat_msrp = boats.find('div', class_='InvPrice').find('span').text.replace('$', '').replace(',', '').replace('Contact for Your Pricing!','N/A').strip()
             except:

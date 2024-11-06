@@ -59,3 +59,23 @@ def runPowerLodger():
 
 
 
+
+def runDanssouthside():
+    # start url         
+    url = "https://www.danssouthsidemarine.com/--inventory?condition=new&subcategory=pontoon&subcategory=pontoon%20%2F%20tritoon&subcategory=pontoon%20boats&pg=1"
+
+
+    # Send a GET request to the URL
+    response = requests.get(url)
+    print(response.text)
+
+
+
+    
+
+    # Write the HTML response to a text file
+    with open("response_page.txt", "w", encoding="utf-8") as file:
+        file.write(response.text)
+        #writer.writerow([boat_year, boat_company,boat_model,boat_floor,boat_length,boat_engine,boat_stock,'Buckeye Sports',boat_location,boat_msrp,boat_discount,today])
+
+runDanssouthside()

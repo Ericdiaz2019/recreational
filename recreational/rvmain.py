@@ -4,6 +4,7 @@ from validation import boatCreateOneFile,rvCreateOneFile, rvValidate, boatValida
 from dataLoad import load_data_daily_pull,load_data_daily_pull_boat
 from bluecompass import run_bluecompass_scraper
 today = datetime.date.today()
+yesterday = today - datetime.timedelta(days=1)
 
 def runRvSpiders():
     rvSpiders = ['campersinn', 'bish', 'generalrv', 'alrv', 'arbutus', 'hwhrv', 'lazydays', 'meyers', 'ronhoover', 'parris','wilkinsrv']
@@ -13,7 +14,9 @@ def runRvSpiders():
 
 def runBoatSpiders():
     boatSpiders = ['buckeyesportscenter', 'desmaspider', 'futrellmarine', 'marinekentu', 'lodderspider','spiderviking', 'wickspider', 'spiderlanding', 'settlespider', 'spiderboat', 'spiderford', 'spiderwakeside','revolutionMarine','montanaBoatCenter',
-                   'unionMarine','valleyMarine','waterWorld','riverCity','harrisonMarine','hawkeye','clearLake','slcBoats','blmBoats','mattasMarine','westCost','actionWater','andersonPower']
+                   'unionMarine','valleyMarine','waterWorld','riverCity','harrisonMarine','hawkeye','clearLake','slcBoats','blmBoats','mattasMarine','westCost','actionWater','andersonPower','wmf','westorlando','wayzatamarine','waterworkzmarine','watereeMarine',
+                   'shybeaver','route1motorsports','planomarine','perfectCatch','paradiseMarine','northpointwatersports','mountainautoandmarine','marinespecialist','leadersrpm','inlandBoat','hillyersmidcitymotorsports','grandpasMarine', 'germainemarine',
+                   'gainesvilleMarina','funnsunboats','delandMotors','captainschoiceboats','bryansMarine','brainerdsports','boatandmotorsuperstores','berkeley','barnesMarine','augustaMarine','atlantaMarine','appletonboats','anchorageyachtbasin']
 
     for spider in boatSpiders:
         subprocess.run(['scrapy', 'crawl', spider])
@@ -34,4 +37,4 @@ def runRvMain():
 
 runBoatMain()
 runRvMain()
-rvValidate()
+#rvValidate()

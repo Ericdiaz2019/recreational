@@ -17,8 +17,8 @@ LOG_LEVEL = 'INFO'
 ROBOTSTXT_OBEY = True
 
 # Limit the number of concurrent requests and contexts for Playwright
-CONCURRENT_REQUESTS = 5
-PLAYWRIGHT_MAX_CONTEXTS = 5
+#CONCURRENT_REQUESTS = 5
+#PLAYWRIGHT_MAX_CONTEXTS = 5
 
 # Download delay to reduce load on server
 DOWNLOAD_DELAY = 2  # Adjust as needed

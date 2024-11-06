@@ -19,6 +19,7 @@ boat_naming = {
     '210 CS' : '210CS',
     '230 Sport' : '230-Sport',
     '23 XT' : '23XT',
+    'Godfrey Pontoons' : 'Godfrey Pontoons'
 }
 
 

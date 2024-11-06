@@ -32,7 +32,7 @@ def rvValidate():
 
         with open(name + f' {today}.csv', 'w', newline='') as writer :
             writer = csv.writer(writer, quoting=csv.QUOTE_ALL)
-            writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','Stock-Number','Unit Type','Location','Dealer','Date'])
+            writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','StockNumber','UnitType','Location','Dealer','Date'])
         
             for iteam in array_name:
                 year = iteam[0]
@@ -155,7 +155,7 @@ def boatValidate():
 
         with open(name + f' {today}.csv', 'w', newline='') as writer :
             writer = csv.writer(writer, quoting=csv.QUOTE_ALL)
-            writer.writerow(['Year', 'Company', 'Model','FloorPlan', 'Length','Engine', 'Stock Number','Dealer', 'Location','MSRP','DISCOUNT','Date'])
+            writer.writerow(['Year', 'Company', 'Model','FloorPlan', 'Length','Engine', 'StockNumber','Dealer', 'Location','Msrp','Discount','Date'])
         
             for iteam in array_name:
                 year = iteam[0]
@@ -253,7 +253,7 @@ def rvCreateOneFile():
     today = datetime.date.today()
     seen_lot_numbers = set()
     files = [f'DailyFiles/Campersinn {today}.csv',f'DailyFiles/LazyDays {today}.csv',f'DailyFiles/GeneralRV {today}.csv',f'DailyFiles/Bluecompass RV {today}.csv',f'DailyFiles/Bish {today}.csv',
-             f'DailyFiles/Arbutus {today}.csv',f'DailyFiles/Wilkins {today}.csv',f'DailyFiles/RonHoover {today}.csv', f'DailyFiles/RonHoover {today}.csv',f'DailyFiles/Meyers {today}.csv',f'DailyFiles/HWH {today}.csv',f'DailyFiles/Parris {today}.csv']
+             f'DailyFiles/Arbutus {today}.csv',f'DailyFiles/Wilkins {today}.csv',f'DailyFiles/RonHoover {today}.csv', f'DailyFiles/RonHoover {today}.csv',f'DailyFiles/Meyers {today}.csv',f'DailyFiles/HWH {today}.csv',f'DailyFiles/Parris {today}.csv',f"DailyFiles/CampingWorld {today}.csv"]
     count = 0
     for nam1 in files:
         try:
@@ -262,7 +262,7 @@ def rvCreateOneFile():
                 reader = csv.reader(input_file, delimiter=',', quotechar='"')
                 writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
                 if count == 0:
-                    writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','Stock-Number','Unit Type','Location','Dealer','Date','New/Used'])
+                    writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','StockNumber','UnitType','Location','Dealer','Date','New/Used'])
                 
                 first_row = next(reader, None)  # Skip the first row
 
@@ -288,10 +288,16 @@ def rvCreateOneFile():
 def boatCreateOneFile():
     today = datetime.date.today()
     seen_lot_numbers = set()
-    files = [f'DailyFiles/Buckeye {today}.csv',f'DailyFiles/DesmasDons {today}.csv',f'DailyFiles/Futrell Marine {today}.csv',f'DailyFiles/MarineSales {today}.csv',f'DailyFiles/Moose Landing {today}.csv',f'DailyFiles/SeattleBoats {today}.csv',f'DailyFiles/Spicers Boat {today}.csv',
-             f'DailyFiles/TimsFord {today}.csv',f'DailyFiles/WakeSide {today}.csv',f'DailyFiles/MontanaBoatCenter {today}.csv',f'DailyFiles/UnionMarine {today}.csv',f'DailyFiles/RevolutionMarine {today}.csv',f'DailyFiles/Valley Marine {today}.csv',f'DailyFiles/Harrison Marine {today}.csv',
-              f'DailyFiles/River City {today}.csv',f'DailyFiles/Water World {today}.csv',f'DailyFiles/Hawkeye {today}.csv',f'DailyFiles/Slc Baots {today}.csv',f'DailyFiles/Blm Boats {today}.csv',f'DailyFiles/Mattas Marine {today}.csv',f'DailyFiles/West Cost {today}.csv',
-               f'DailyFiles/Action Water {today}.csv',f'DailyFiles/Anderson Power {today}.csv' ]
+    files = [
+            f'DailyFiles/Buckeye {today}.csv',f'DailyFiles/DesmasDons {today}.csv',f'DailyFiles/Futrell Marine {today}.csv',f'DailyFiles/MarineSales {today}.csv',f'DailyFiles/Moose Landing {today}.csv',f'DailyFiles/SeattleBoats {today}.csv',f'DailyFiles/Spicers Boat {today}.csv',
+            f'DailyFiles/TimsFord {today}.csv',f'DailyFiles/WakeSide {today}.csv',f'DailyFiles/MontanaBoatCenter {today}.csv',f'DailyFiles/UnionMarine {today}.csv',f'DailyFiles/RevolutionMarine {today}.csv',f'DailyFiles/Valley Marine {today}.csv',f'DailyFiles/Harrison Marine {today}.csv',
+            f'DailyFiles/River City {today}.csv',f'DailyFiles/Water World {today}.csv',f'DailyFiles/Hawkeye {today}.csv',f'DailyFiles/Slc Baots {today}.csv',f'DailyFiles/Blm Boats {today}.csv',f'DailyFiles/Mattas Marine {today}.csv',f'DailyFiles/West Cost {today}.csv',
+            f'DailyFiles/Action Water {today}.csv',f'DailyFiles/Anderson Power {today}.csv',f'DailyFiles/WMF Watercraft {today}.csv',f'DailyFiles/Westorlando {today}.csv',f'DailyFiles/Wayzata Marine {today}.csv',f'DailyFiles/WaterWorkz Marine {today}.csv',f'DailyFiles/Wateree Marine {today}.csv',
+            f'DailyFiles/ShyBeaver {today}.csv',f'DailyFiles/Route1 MotorSports {today}.csv',f'DailyFiles/Plano Marine {today}.csv',f'DailyFiles/Perfect Catch {today}.csv',f'DailyFiles/Paradise Marine {today}.csv',f'DailyFiles/NorthPoint WaterSports {today}.csv',f'DailyFiles/Mountain Marine {today}.csv',
+            f'DailyFiles/Marine Specialist {today}.csv',f'DailyFiles/Leadersrpm {today}.csv',f'DailyFiles/Inland Boat {today}.csv',f'DailyFiles/Hillyers {today}.csv',f'DailyFiles/Grandpas Marine {today}.csv',f'DailyFiles/Germaine Marine {today}.csv',f'DailyFiles/Gainesville Marina {today}.csv',
+            f'DailyFiles/Funnsun Boats {today}.csv',f'DailyFiles/Deland Motors {today}.csv', f'DailyFiles/Captains choice {today}.csv',f'DailyFiles/Bryans Marine {today}.csv',f'DailyFiles/Brainerd Sports {today}.csv',f'DailyFiles/BoatAndMotor SuperStores {today}.csv',f'DailyFiles/Berkeley {today}.csv',
+            f'DailyFiles/Barnes Marine {today}.csv',f'DailyFiles/Augusta Marine {today}.csv',f'DailyFiles/Appleton Boats {today}.csv',f'DailyFiles/Anchorage Yacht {today}.csv'
+        ]
     count = 0
     for nam1 in files:
         try:
@@ -300,7 +306,7 @@ def boatCreateOneFile():
                 reader = csv.reader(input_file, delimiter=',', quotechar='"')
                 writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
                 if count == 0:
-                    writer.writerow(['Year', 'Company', 'Model','FloorPlan', 'Length','Engine', 'Stock Number','Dealer', 'Location','MSRP','DISCOUNT','Date'])
+                    writer.writerow(['Year', 'Company', 'Model','FloorPlan', 'Length','Engine', 'StockNumber','Dealer', 'Location','Msrp','Discount','Date'])
                 
                 first_row = next(reader, None)  # Skip the first row
 

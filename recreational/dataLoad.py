@@ -29,7 +29,7 @@ def load_data_daily_pull(csv_file, name_collection, delete):
         data = []
         for row in reader:
             # Set LotNum as the _id field
-            row['_id'] = row['Stock-Number']
+            row['_id'] = row['StockNumber']
             data.append(row)
         
         # Insert all data into MongoDB
@@ -66,7 +66,7 @@ def load_data_daily_pull_boat(csv_file, name_collection, delete):
         data = []
         for row in reader:
             # Set LotNum as the _id field
-            row['_id'] = row['Stock Number']
+            row['_id'] = row['StockNumber']
             data.append(row)
         
         # Insert all data into MongoDB
