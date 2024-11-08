@@ -15,19 +15,58 @@ today = datetime.date.today()
 with open("proxies.txt", 'r') as r:
     proxies = r.read().splitlines()
 
-# Manufacturer list
-manufacturer_list = [
-    "Airstream RV", "Alliance RV", "American Coach", "Black Series Camper", "Brinkley",
-    "Coachmen", "CrossRoads RV", "Cruiser", "Dave & Matt Vans", "DRV Luxury Suites",
-    "Dynamax", "EAST TO WEST", "Eclipse", "Ember RV", "Entegra Coach", "Fleetwood RV",
-    "Forest River", "Grand Design", "Grech RV", "Gulf Stream", "Heartland",
-    "Jayco", "keystone", "Lance", "Midwest Automotive Designs", "Newmar", "NeXus RV",
-    "OGV Luxury", "OGV Luxury Coach", "Outside Van", "Palomino", "Phoenix Cruiser",
-    "Pleasure-Way", "Prime Time RV", "Regency RV", "Remote Vans", "Renegade",
-    "Roadtrek", "Storyteller Overland", "Thor", "Tiffin Motorhomes", "Unknown",
-    "Venture RV", "Winnebago", "Winnebago Industries Towables","Damon","Riverside RV","Highland Ridge",
-    'Dutchmen'
-]
+manufacturer_mapping = {
+    "Airstream RV": "Airstream RV",
+    "Alliance RV": "Alliance RV",
+    "American Coach": "American Coach",
+    "Black Series Camper": "Black Series Camper",
+    "Brinkley": "Brinkley",
+    "Coachmen": "Coachmen RV",
+    "CrossRoads RV": "CrossRoads RV",
+    "Cruiser": "Cruiser",
+    "Dave & Matt Vans": "Dave & Matt Vans",
+    "DRV Luxury Suites": "DRV Luxury Suites",
+    "Dynamax": "Dynamax",
+    "EAST TO WEST": "EAST TO WEST",
+    "Eclipse": "Eclipse",
+    "Ember RV": "Ember RV",
+    "Entegra Coach": "Entegra Coach",
+    "Fleetwood RV": "Fleetwood RV",
+    "Forest River": "Forest River RV",
+    "Grand Design": "Grand Design",
+    "Grech RV": "Grech RV",
+    "Gulf Stream": "Gulf Stream RV",
+    "Heartland": "Heartland",
+    "Jayco": "Jayco",
+    "keystone": "Keystone RV",
+    "Lance": "Lance",
+    "Midwest Automotive Designs": "Midwest Automotive Designs",
+    "Newmar": "Newmar",
+    "NeXus RV": "NeXus RV",
+    "OGV Luxury": "OGV Luxury",
+    "OGV Luxury Coach": "OGV Luxury Coach",
+    "Outside Van": "Outside Van",
+    "Palomino": "Palomino",
+    "Phoenix Cruiser": "Phoenix Cruiser",
+    "Pleasure-Way": "Pleasure-Way",
+    "Prime Time RV": "Prime Time RV",
+    "Regency RV": "Regency RV",
+    "Remote Vans": "Remote Vans",
+    "Renegade": "Renegade",
+    "Roadtrek": "Roadtrek",
+    "Storyteller Overland": "Storyteller Overland",
+    "Thor": "Thor Motor Coach",
+    "Tiffin Motorhomes": "Tiffin Motorhomes",
+    "Unknown": "Unknown",
+    "Venture RV": "Venture RV",
+    "Winnebago": "Winnebago",
+    "Winnebago Industries Towables": "Winnebago Industries Towables",
+    "Damon": 'Damon',  # Not found in the second list
+    "Riverside RV": 'Riverside RV',  # Not found in the second list
+    "Highland Ridge": 'Highland Ridge',  # Not found in the second list
+    "Dutchmen": 'Dutchmen'  # Not found in the second list
+}
+
 
 # Model mapping
 model_map = {
@@ -944,10 +983,9 @@ class Scraper:
     # Helper function to find manufacturer
     @staticmethod
     def find_manufacturer(unit_title):
-        for manuf in manufacturer_list:
-            print(unit_title)
-            if manuf.lower() in unit_title.lower():
-                return manuf
+        for manuf_key in manufacturer_mapping:
+            if manuf_key.lower() in unit_title.lower():
+                return manufacturer_mapping[manuf_key]
         return "Unknown"
 
     # Helper function to find model
@@ -965,18 +1003,18 @@ class Scraper:
         brand = self.find_model(unit_model)
         
         data = {
-            "Year": asset_data['year'],
-            "Company": manufacturer,
-            "Brand": brand,
-            "FloorPlan": asset_data['model'],
-            "MSRP": asset_data['totalListPrice'],
-            "Discount Price": asset_data['queryPrice'],
-            "stockNumber": asset_data['stockNumber'],
-            "Category": asset_data['classDisplay'],
-            "Location": f"{asset_data['billingCity']} {asset_data['billingStateCode']}",
+            "Year": asset_data['year'].strip(),
+            "Company": manufacturer.strip(),
+            "Brand": brand.strip(),
+            "FloorPlan": asset_data['model'].strip(),
+            "MSRP": asset_data['totalListPrice'].strip(),
+            "Discount Price": asset_data['queryPrice'].strip(),
+            "stockNumber": asset_data['stockNumber'].strip(),
+            "Category": asset_data['classDisplay'].strip(),
+            "Location": f"{asset_data['billingCity']} {asset_data['billingStateCode']}".strip(),
             "Dealer": 'Camping World',
-            "Date": today,
-            "condition": asset_data['condition']
+            "Date": today.strip(),
+            "condition": asset_data['condition'].strip()
         }
         return data
 

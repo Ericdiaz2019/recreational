@@ -3,6 +3,7 @@ import datetime
 from validation import boatCreateOneFile,rvCreateOneFile, rvValidate, boatValidate
 from dataLoad import load_data_daily_pull,load_data_daily_pull_boat
 from bluecompass import run_bluecompass_scraper
+from testingcamping import run_scraper
 today = datetime.date.today()
 yesterday = today - datetime.timedelta(days=1)
 
@@ -31,10 +32,12 @@ def runBoatMain():
 def runRvMain():
     runRvSpiders()
     run_bluecompass_scraper()
+    run_scraper()
     rvCreateOneFile()
     load_data_daily_pull(f'DailyRun/data {today}.csv','DailyPull','Yes')
 
+#load_data_daily_pull_boat(f'DailyRun/BoatDaily {today}.csv','DailyBoatPull','Yes')
 
-runBoatMain()
+#runBoatMain()
 runRvMain()
 #rvValidate()
