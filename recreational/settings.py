@@ -14,7 +14,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 LOG_LEVEL = 'INFO'
 
 # Enable robots.txt compliance
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Limit the number of concurrent requests and contexts for Playwright
 #CONCURRENT_REQUESTS = 5

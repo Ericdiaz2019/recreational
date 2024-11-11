@@ -253,7 +253,12 @@ def rvCreateOneFile():
     today = datetime.date.today()
     seen_lot_numbers = set()
     files = [f'DailyFiles/Campersinn {today}.csv',f'DailyFiles/LazyDays {today}.csv',f'DailyFiles/GeneralRV {today}.csv',f'DailyFiles/Bluecompass RV {today}.csv',f'DailyFiles/Bish {today}.csv',
-             f'DailyFiles/Arbutus {today}.csv',f'DailyFiles/Wilkins {today}.csv',f'DailyFiles/RonHoover {today}.csv', f'DailyFiles/RonHoover {today}.csv',f'DailyFiles/Meyers {today}.csv',f'DailyFiles/HWH {today}.csv',f'DailyFiles/Parris {today}.csv',f"DailyFiles/CampingWorld {today}.csv"]
+             f'DailyFiles/Arbutus {today}.csv',f'DailyFiles/Wilkins {today}.csv',f'DailyFiles/RonHoover {today}.csv', f'DailyFiles/RonHoover {today}.csv',f'DailyFiles/Meyers {today}.csv',f'DailyFiles/HWH {today}.csv',f'DailyFiles/Parris {today}.csv',f"DailyFiles/CampingWorld {today}.csv",
+             f'DailyFiles/Adventure Motorhomes {today}.csv',f'DailyFiles/Alpinhaus {today}.csv',f'DailyFiles/Bretz {today}.csv',f'DailyFiles/Crestview {today}.csv',f'DailyFiles/Dicks {today}.csv',f'DailyFiles/EvansRV Sales {today}.csv',f'DailyFiles/HappyDaze {today}.csv',f'DailyFiles/Ketelsen {today}.csv',
+             f'DailyFiles/LittleDealer {today}.csv',f'DailyFiles/Mikethompson {today}.csv',f'DailyFiles/Pleasureland {today}.csv',f'DailyFiles/Pontiac {today}.csv',f'DailyFiles/Roberson {today}.csv',f'DailyFiles/RvVacation {today}.csv',f'DailyFiles/Stoltzfus {today}.csv',f'DailyFiles/Tomschaeffers {today}.csv',
+             f'DailyFiles/TrailerHitch {today}.csv',f'DailyFiles/Wheels {today}.csv',f'DailyFiles/Windish {today}.csv',f'DailyFiles/Boyersales {today}.csv',f'DailyFiles/Markquart {today}.csv',f'DailyFiles/Submmit {today}.csv',f'DailyFiles/Bullyan {today}.csv',f'DailyFiles/Southland {today}.csv',f'DailyFiles/1000Island {today}.csv',
+             f'DailyFiles/Steves {today}.csv',f'DailyFiles/Cordelia {today}.csv'
+             ]
     count = 0
     for nam1 in files:
         try:

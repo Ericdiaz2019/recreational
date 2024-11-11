@@ -8,7 +8,9 @@ today = datetime.date.today()
 yesterday = today - datetime.timedelta(days=1)
 
 def runRvSpiders():
-    rvSpiders = ['campersinn', 'bish', 'generalrv', 'alrv', 'arbutus', 'hwhrv', 'lazydays', 'meyers', 'ronhoover', 'parris','wilkinsrv']
+    rvSpiders = ['campersinn', 'bish', 'generalrv', 'alrv', 'arbutus', 'hwhrv', 'lazydays', 'meyers', 'ronhoover', 'parris','wilkinsrv','adventuremotorhomes','alpinhaus','bretz',
+                 'crestview','dicks','evansrvsales','happydaze','ketelsen','littledealer','mikethompson','pleasureland','pontiac','roberson','rvvacation','stoltzfus','tomschaeffers',
+                 'trailerhitch','wheels','windishrv','boyersales','markquart','submmit','bullyan','southland','island','steves','cordelia']
 
     for spider in rvSpiders:
         subprocess.run(['scrapy', 'crawl', spider])
@@ -41,3 +43,6 @@ def runRvMain():
 #runBoatMain()
 runRvMain()
 #rvValidate()
+#run_bluecompass_scraper()
+#run_scraper()
+#rvCreateOneFile()

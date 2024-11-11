@@ -1,5 +1,6 @@
 import requests, random, logging, re, os
 import datetime
+import csv
 
 # Setup logging to file
 file_handler = logging.FileHandler("log.txt", mode="a")
@@ -947,9 +948,15 @@ class Scraper:
 
     @staticmethod
     def create_units_csv() -> None:
-        if not os.path.isfile(f"DailyFiles/CampingWorld {today}.csv"):
-            with open(f"DailyFiles/CampingWorld {today}.csv", 'w') as r:
-                r.write('Year,Company,Brand,FloorPlan,Msrp,Discount,Stock-Number,Unit Type,Location,Dealer,Date\n')
+        file_path = f"DailyFiles/CampingWorld {today}.csv"
+        
+        # Check if file already exists
+        if not os.path.isfile(file_path):
+            with open(file_path, 'w', newline='') as file:
+                writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+                # Write the header row with all fields quoted
+                writer.writerow(['Year', 'Company', 'Brand', 'FloorPlan', 'Msrp', 'Discount', 
+                                'StockNumber', 'Unit Type', 'Location', 'Dealer', 'Date', 'Condition'])
 
     def get_xsrf_token(self) -> str:
         headers = {
@@ -976,9 +983,30 @@ class Scraper:
 
     @staticmethod
     def write_asset_data(asset_data: dict) -> None:
-        with open(f"DailyFiles/CampingWorld {today}.csv", 'a') as r:
-            r.write(", ".join([str(i) for i in asset_data.values()]))
-            r.write("\n")
+        file_path = f"DailyFiles/CampingWorld {today}.csv"
+        
+        with open(file_path, 'a', newline='') as file:
+            writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+            
+            # Write the header if the file is empty
+            if os.stat(file_path).st_size == 0:
+                writer.writerow(['Year', 'Company', 'Brand', 'FloorPlan', 'Msrp', 'Discount', 'Stock-Number', 
+                                 'Unit Type', 'Location', 'Dealer', 'Date', 'Condition'])
+            
+            writer.writerow([
+                asset_data['Year'],
+                asset_data['Company'],
+                asset_data['Brand'],
+                asset_data['FloorPlan'],
+                asset_data['MSRP'],
+                asset_data['Discount Price'],
+                asset_data['stockNumber'],
+                asset_data['Category'],
+                asset_data['Location'],
+                asset_data['Dealer'],
+                asset_data['Date'],
+                asset_data['condition']
+            ])
 
     # Helper function to find manufacturer
     @staticmethod
@@ -1003,19 +1031,19 @@ class Scraper:
         brand = self.find_model(unit_model)
         
         data = {
-            "Year": asset_data['year'].strip(),
-            "Company": manufacturer.strip(),
-            "Brand": brand.strip(),
-            "FloorPlan": asset_data['model'].strip(),
-            "MSRP": asset_data['totalListPrice'].strip(),
-            "Discount Price": asset_data['queryPrice'].strip(),
-            "stockNumber": asset_data['stockNumber'].strip(),
-            "Category": asset_data['classDisplay'].strip(),
-            "Location": f"{asset_data['billingCity']} {asset_data['billingStateCode']}".strip(),
-            "Dealer": 'Camping World',
-            "Date": today.strip(),
-            "condition": asset_data['condition'].strip()
-        }
+                "Year": str(asset_data['year']).strip(),
+                "Company": manufacturer.strip(),
+                "Brand": brand.strip(),
+                "FloorPlan": str(asset_data['model']).strip(),
+                "MSRP": str(asset_data['totalListPrice']).strip(),
+                "Discount Price": str(asset_data['queryPrice']).strip(),
+                "stockNumber": str(asset_data['stockNumber']).strip(),
+                "Category": str(asset_data['classDisplay']).strip(),
+                "Location": f"{asset_data['billingCity']} {asset_data['billingStateCode']}".strip(),
+                "Dealer": 'Camping World',
+                "Date": today,
+                "condition": str(asset_data['condition']).strip()
+        }   
         return data
 
     def scrape(self) -> None:
