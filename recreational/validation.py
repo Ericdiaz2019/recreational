@@ -257,7 +257,9 @@ def rvCreateOneFile():
              f'DailyFiles/Adventure Motorhomes {today}.csv',f'DailyFiles/Alpinhaus {today}.csv',f'DailyFiles/Bretz {today}.csv',f'DailyFiles/Crestview {today}.csv',f'DailyFiles/Dicks {today}.csv',f'DailyFiles/EvansRV Sales {today}.csv',f'DailyFiles/HappyDaze {today}.csv',f'DailyFiles/Ketelsen {today}.csv',
              f'DailyFiles/LittleDealer {today}.csv',f'DailyFiles/Mikethompson {today}.csv',f'DailyFiles/Pleasureland {today}.csv',f'DailyFiles/Pontiac {today}.csv',f'DailyFiles/Roberson {today}.csv',f'DailyFiles/RvVacation {today}.csv',f'DailyFiles/Stoltzfus {today}.csv',f'DailyFiles/Tomschaeffers {today}.csv',
              f'DailyFiles/TrailerHitch {today}.csv',f'DailyFiles/Wheels {today}.csv',f'DailyFiles/Windish {today}.csv',f'DailyFiles/Boyersales {today}.csv',f'DailyFiles/Markquart {today}.csv',f'DailyFiles/Submmit {today}.csv',f'DailyFiles/Bullyan {today}.csv',f'DailyFiles/Southland {today}.csv',f'DailyFiles/1000Island {today}.csv',
-             f'DailyFiles/Steves {today}.csv',f'DailyFiles/Cordelia {today}.csv'
+             f'DailyFiles/Steves {today}.csv',f'DailyFiles/Cordelia {today}.csv',f'DailyFiles/Southern {today}.csv',f'DailyFiles/TSR {today}.csv',f'DailyFiles/TAC {today}.csv',f'DailyFiles/WalnutRidge {today}.csv',f'DailyFiles/WilliamsFamily {today}.csv',f'DailyFiles/Willies {today}.csv',f'DailyFiles/Zoombers {today}.csv',
+             f'DailyFiles/Bama {today}.csv',f'DailyFiles/BanksTonMotorHomes {today}.csv',f'DailyFiles/BobHurley {today}.csv',f'DailyFiles/Byerly {today}.csv',f'DailyFiles/CraihSmith {today}.csv',f'DailyFiles/Crowder {today}.csv',f'DailyFiles/CurtisTrailer {today}.csv',f'DailyFiles/DadsCamper {today}.csv',
+             f'DailyFiles/Dodd {today}.csv',f'DailyFiles/Hemlockhill {today}.csv',f'DailyFiles/Hilltopcamper {today}.csv',f'DailyFiles/JohnnieWalker {today}.csv'
              ]
     count = 0
     for nam1 in files:

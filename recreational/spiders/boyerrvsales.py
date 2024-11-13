@@ -476,12 +476,12 @@ class boyersales(scrapy.Spider):
             floor = unit.find('span', class_='vehicle-heading__model').text.strip().split()
             unit_floor = floor[-1]
             try:
-                unit_msrp = unit.find('span', class_='vehicle-price--old').text.replace('Retail Price','').replace('$','').replace(",",'').replace('Our Price','').replce('Click for a Quote','').strip()
+                unit_msrp = unit.find('span', class_='vehicle-price--old').text.replace('Retail Price','').replace('$','').replace(",",'').replace('Our Price','').replace('Click for a Quote','').strip()
             except:
                 unit_msrp = 'N/A'
             
             try:
-                unit_discount = unit.find('span', class_='vehicle-price--current').text.replace('Retail Price','').replace('$','').replace(",",'').replace('Our Price','').replce('Click for a Quote','').strip()
+                unit_discount = unit.find('span', class_='vehicle-price--current').text.replace('Retail Price','').replace('$','').replace(",",'').replace('Our Price','').replace('Click for a Quote','').strip()
             except:
                 unit_discount = 'N/A'
 

@@ -18,11 +18,11 @@ manufacturer_list = [
     "OGV Luxury", "OGV Luxury Coach", "Outside Van", "Palomino", "Phoenix Cruiser",
     "Pleasure-Way", "Prime Time RV", "Regency RV", "Remote Vans", "Renegade",
     "Roadtrek", "Storyteller Overland", "Thor Motor Coach", "Tiffin Motorhomes", "Unknown",
-    "Venture RV", "Winnebago", "Winnebago Industries Towables", 'Modern Buggy'
+    "Venture RV", "Winnebago", "Winnebago Industries Towables",'inTech RV', 'Dutchmen RV', 'Starcraft','Redwood RV',
+    'KZ', 'Highland Ridge RV','Sunset Park RV', 'Riverside RV',
 ]
 
 model_map = {
-    'Big Buggy': 'Big Buggy',
     "Valor All-Access" : 'Valor All-Access',
     "access": "Access",
     "ace": "ACE",
@@ -346,8 +346,7 @@ model_map = {
     "wildwood x-lite": "Wildwood X-Lite",
     "windsport": "Windsport",
     "work and play": "Work and Play",
-    "xlr boost": "XLR Boost",
-    
+    "xlr boost": "XLR Boost"
 }
 
 
@@ -373,27 +372,21 @@ proxies = [
 ]
 
 
-class adventuremotorhomes(scrapy.Spider):
-    name = "adventuremotorhomes"
+class johnniewalker(scrapy.Spider):
+    name = "johnniewalker"
 
 
     def start_requests(self):
         web_links = {
-            'Travel Trailer': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=29&pagesize=12',
-            'FifthWheel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=5&pagesize=12',
-            'ToyHauler': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=26%2C28&pagesize=12',
-            'ClassC Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=16',
-            'ClassC Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=17',
-            'ClassC Super Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=95',
-            'ClassB Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=13',
-            'ClassB Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=116',
-            'ClassB Gas+': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=14',
-            'ClassA Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=9',
-            'ClassA Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=10',
-            'Expandable': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=4',
-            'Teardrop Trailer': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=102',
-            'Destination Trailer' : 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=3',
-            'Folding Pop-Up Camper' : 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=7'
+            'Travel Trailer': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=29',
+            'FifthWheel': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=5',
+            'ToyHauler': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=26%2C28',
+            'ClassC Gas': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=16',
+            'ClassC Diesel': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=17',
+            'ClassC ToyHauler Gas': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=19',
+            'ClassC Super Diesel': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=95',
+            'ClassA Gas': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=9',
+            'ClassA ToyHauler Gas': 'https://www.johnniewalkerrv.com/new-rvs-for-sale?pagesize=12&s=true&types=12',
         }
 
         for category_name, link_url in web_links.items():
@@ -430,9 +423,10 @@ class adventuremotorhomes(scrapy.Spider):
                 meta={
                     'playwright': True,
                     'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "li.standard-template"),
+                        PageMethod("wait_for_selector", "li.standard-template-v2"),
                     ],
                     'category_name': response.meta['category_name'],
+                    'page_goto_kwargs': {'timeout': 60000},
                 },
                 callback=self.parse_units,
                 errback=self.handle_error,
@@ -442,7 +436,7 @@ class adventuremotorhomes(scrapy.Spider):
     
     def parse_units(self, response):
         soup = BeautifulSoup(response.text, 'lxml')
-        units = soup.find_all('li', class_='standard-template')
+        units = soup.find_all('li', class_='standard-template-v2')
 
         for unit in units:
             unit_title = unit.find('div', class_='h3 unit-title').find('a').text.strip()
@@ -464,25 +458,25 @@ class adventuremotorhomes(scrapy.Spider):
             unit_company = manufacturer
             unit_brand = find_model(unit_title)
             unit_floor = unit_title_text[-1]
-            unit_stock = unit.find('li', class_='stock-number').text.replace('Stock #:','').strip()
-            unit_location = unit.find('li', class_='location').text.replace('.','').replace(',','').replace('""','').replace('Location:','').strip()
+            unit_stock = unit.find('span', class_='stock-number-text').text
+            unit_location = unit.find('span', class_='unit-location-text').text.replace('.','').replace(',','').replace('""','').strip()
             unit_category = response.meta['category_name']
             try:
-                unit_msrp = unit.find('span', class_='regPriceText').text.replace('$','').replace(',','').strip()
+                unit_msrp = unit.find('span', class_='reg-price-text').text.replace('$','').replace(',','').strip()
             except:
                 unit_msrp = 'N/A'
             
             try:
-                unit_discount = unit.find('span', class_='salePriceText').text.replace('$','').replace(',','').strip()
+                unit_discount = unit.find('span', class_='sale-price-text').text.replace('$','').replace(',','').strip()
             except:
                 unit_discount = 'N/A'
 
-            with open(f'DailyFiles/Adventure Motorhomes {today}.csv', 'a', newline='') as file:
+            with open(f'DailyFiles/JohnnieWalker {today}.csv', 'a', newline='') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_ALL)
                 if file.tell() == 0:  # If file is empty, write header
                     writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','Stock-Number','Unit Type','Location','Dealer','Date'])
                 
-                writer.writerow([unit_year,unit_company,unit_brand,unit_floor,unit_msrp,unit_discount,unit_stock,unit_category,unit_location,'Adventure Motorhomes',today])
+                writer.writerow([unit_year,unit_company,unit_brand,unit_floor,unit_msrp,unit_discount,unit_stock,unit_category,unit_location,'JohnnieWalker',today])
 
     def handle_error(self, failure):
         self.logger.error(repr(failure))

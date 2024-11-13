@@ -23,6 +23,7 @@ manufacturer_mapping = {
     "Black Series Camper": "Black Series Camper",
     "Brinkley": "Brinkley",
     "Coachmen": "Coachmen RV",
+    'crossroads' : 'CrossRoads RV',
     "CrossRoads RV": "CrossRoads RV",
     "Cruiser": "Cruiser",
     "Dave & Matt Vans": "Dave & Matt Vans",
@@ -50,6 +51,7 @@ manufacturer_mapping = {
     "Palomino": "Palomino",
     "Phoenix Cruiser": "Phoenix Cruiser",
     "Pleasure-Way": "Pleasure-Way",
+    "prime time": "Prime Time RV",
     "Prime Time RV": "Prime Time RV",
     "Regency RV": "Regency RV",
     "Remote Vans": "Remote Vans",
@@ -65,7 +67,8 @@ manufacturer_mapping = {
     "Damon": 'Damon',  # Not found in the second list
     "Riverside RV": 'Riverside RV',  # Not found in the second list
     "Highland Ridge": 'Highland Ridge',  # Not found in the second list
-    "Dutchmen": 'Dutchmen'  # Not found in the second list
+    "Dutchmen": 'Dutchmen',
+    'ROCKWOOD' : 'Rockwood'  # Not found in the second list
 }
 
 
@@ -144,6 +147,7 @@ model_map = {
     "sunstar sport": "Sunstar Sport",
     "tribute": "Tribute",
     "flyer": "Flyer",
+    'intech' : 'Intech RV',
     "intech rv": "Intech Rv",
     "go play": "Go Play",
     "journeyer": "Journeyer",

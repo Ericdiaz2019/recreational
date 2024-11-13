@@ -1,28 +1,77 @@
+
 import scrapy
 from scrapy_playwright.page import PageMethod
 from bs4 import BeautifulSoup
-import re
-import csv
 import math
+import urllib.parse
 import datetime
-import time
+import csv
+import re
 import random
+
+# Generate a string of 5 random numbers between 1 and 100
+def num():
+    random_numbers = ''.join(str(random.randint(1, 100)) for _ in range(5))
+
+
 today = datetime.date.today()
 
-manufacturer_list = [
-    "Airstream RV", "Alliance RV", "American Coach", "Black Series Camper", "Brinkley",
-    "Coachmen RV", "CrossRoads RV", "Cruiser", "Dave & Matt Vans", "DRV Luxury Suites",
-    "Dynamax", "EAST TO WEST", "Eclipse", "Ember RV", "Entegra Coach", "Fleetwood RV",
-    "Forest River RV", "Grand Design", "Grech RV", "Gulf Stream RV", "Heartland",
-    "Jayco", "Keystone RV", "Lance", "Midwest Automotive Designs", "Newmar", "NeXus RV",
-    "OGV Luxury", "OGV Luxury Coach", "Outside Van", "Palomino", "Phoenix Cruiser",
-    "Pleasure-Way", "Prime Time RV", "Regency RV", "Remote Vans", "Renegade",
-    "Roadtrek", "Storyteller Overland", "Thor Motor Coach", "Tiffin Motorhomes", "Unknown",
-    "Venture RV", "Winnebago", "Winnebago Industries Towables", 'Modern Buggy'
-]
+
+manufacturer_mapping = {
+    "Airstream RV": "Airstream RV",
+    "Alliance": "Alliance RV",
+    "American Coach": "American Coach",
+    "Black Series Camper": "Black Series Camper",
+    "Brinkley": "Brinkley",
+    "Coachmen": "Coachmen RV",
+    'crossroads' : 'CrossRoads RV',
+    "CrossRoads RV": "CrossRoads RV",
+    "Cruiser": "Cruiser",
+    "Dave & Matt Vans": "Dave & Matt Vans",
+    "DRV Luxury Suites": "DRV Luxury Suites",
+    "Dynamax": "Dynamax",
+    "EAST TO WEST": "EAST TO WEST",
+    "Eclipse": "Eclipse",
+    "Ember RV": "Ember RV",
+    "Entegra Coach": "Entegra Coach",
+    "Fleetwood RV": "Fleetwood RV",
+    "Forest River": "Forest River RV",
+    "Grand Design": "Grand Design",
+    "Grech RV": "Grech RV",
+    "Gulf Stream": "Gulf Stream RV",
+    "Heartland": "Heartland",
+    "Jayco": "Jayco",
+    "keystone": "Keystone RV",
+    "Lance": "Lance",
+    "Midwest Automotive Designs": "Midwest Automotive Designs",
+    "Newmar": "Newmar",
+    "NeXus RV": "NeXus RV",
+    "OGV Luxury": "OGV Luxury",
+    "OGV Luxury Coach": "OGV Luxury Coach",
+    "Outside Van": "Outside Van",
+    "Palomino": "Palomino",
+    "Phoenix Cruiser": "Phoenix Cruiser",
+    "Pleasure-Way": "Pleasure-Way",
+    "prime time": "Prime Time RV",
+    "Prime Time RV": "Prime Time RV",
+    "Regency RV": "Regency RV",
+    "Remote Vans": "Remote Vans",
+    "Renegade": "Renegade",
+    "Roadtrek": "Roadtrek",
+    "Storyteller Overland": "Storyteller Overland",
+    "Thor": "Thor Motor Coach",
+    "Tiffin Motorhomes": "Tiffin Motorhomes",
+    "Unknown": "Unknown",
+    "Venture RV": "Venture RV",
+    "Winnebago": "Winnebago",
+    "Winnebago Industries Towables": "Winnebago Industries Towables",
+    "Damon": 'Damon',  # Not found in the second list
+    "Riverside RV": 'Riverside RV',  # Not found in the second list
+    "Highland Ridge": 'Highland Ridge',  # Not found in the second list
+    "Dutchmen": 'Dutchmen'  # Not found in the second list
+}
 
 model_map = {
-    'Big Buggy': 'Big Buggy',
     "Valor All-Access" : 'Valor All-Access',
     "access": "Access",
     "ace": "ACE",
@@ -346,10 +395,8 @@ model_map = {
     "wildwood x-lite": "Wildwood X-Lite",
     "windsport": "Windsport",
     "work and play": "Work and Play",
-    "xlr boost": "XLR Boost",
-    
+    "xlr boost": "XLR Boost"
 }
-
 
 def find_model(unit_title):
     brand = None
@@ -365,126 +412,140 @@ def find_model(unit_title):
 
     return brand
 
-proxies = [
-    {"server": "134.195.230.104:6066", "username": "DHMR115563", "password": "AIJKMQXZ"},
-    {"server": "134.195.229.200:5261", "username": "DHMR115563", "password": "AIJKMQXZ"},
-    {"server": "216.185.221.198:6906", "username": "DHMR115563", "password": "AIJKMQXZ"},
-    # Add more proxies as necessary
-]
+def find_company(unit_title):
+    brand = None
+    # Iterate over the model_map keys to find a match in unit_title
+    for model_key in manufacturer_mapping:
+        if model_key.lower() in unit_title.lower():  # Case-insensitive match
+            brand = manufacturer_mapping[model_key]  # Get the normalized model name from model_map
+            break  # Stop at the first match
+    
+    # If no match was found, set brand to 'N/A'
+    if not brand:
+        brand = 'N/A'
 
+    return brand
 
-class adventuremotorhomes(scrapy.Spider):
-    name = "adventuremotorhomes"
-
+class southern(scrapy.Spider):
+    name = 'southern'  # Unique identifier for the spider
 
     def start_requests(self):
-        web_links = {
-            'Travel Trailer': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=29&pagesize=12',
-            'FifthWheel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=5&pagesize=12',
-            'ToyHauler': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&types=26%2C28&pagesize=12',
-            'ClassC Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=16',
-            'ClassC Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=17',
-            'ClassC Super Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=95',
-            'ClassB Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=13',
-            'ClassB Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=116',
-            'ClassB Gas+': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=14',
-            'ClassA Gas': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=9',
-            'ClassA Diesel': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=10',
-            'Expandable': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=4',
-            'Teardrop Trailer': 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=102',
-            'Destination Trailer' : 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=3',
-            'Folding Pop-Up Camper' : 'https://www.adventuremotorhomes.net/rv-search?s=true&condition=1&pagesize=12&types=7'
+        # Dictionary of URLs the spider will start with
+        urls = { 
+            'Travel Trailer': 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=travel%20trailer',
+            'FifthWheel': 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=fifth%20wheel',
+            'ToyHauler': 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=toy%20hauler&subcategory=toy%20hauler%20-%20travel%20trailer',
+            'ClassC Gas': 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=class%20c',
+            'ClassB Gas' : 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=class%20b',
+            'ClassA Gas' : 'https://www.southernrv.com/default.asp?condition=new&page=inventory&pg=1&sortby=Inventory%7Casc&subcategory=class%20a'
         }
 
-        for category_name, link_url in web_links.items():
-
-                yield scrapy.Request(
-                    url=link_url,
-                    meta={
-                        'playwright': True,
-                        'playwright_page_methods': [
-                            PageMethod("wait_for_selector", "span.total-units"),
-                        ],
-                        'playwright_context': 'default',
-                        'page_goto_kwargs': {'timeout': 60000},   # Use default browser context
-                        'category_name': category_name,
-                    },
-                    callback=self.parse
-                )
+        for category_name, url in urls.items():
+            yield scrapy.Request(
+                url=url,
+                meta={
+                    'playwright': True,
+                    'playwright_page_methods': [
+                        PageMethod("wait_for_selector", "div.v7list-subheader__result-text"),
+                    ],
+                    'playwright_context': 'default',  # Use default browser context
+                    'category_name': category_name  # Pass category name for logging
+                },
+                callback=self.parse
+            )
 
     def parse(self, response):
         self.logger.info(f"Processing category {response.meta['category_name']}")
 
+        # Use BeautifulSoup to parse the response
         page_content = response.text
         soup = BeautifulSoup(page_content, 'lxml')
 
-        count = soup.find('span', class_='total-units').text
-        amount = math.ceil(int(count) / 12)
 
-        for i in range(1, amount + 1):
-            page_url = f'{response.url}&page={i}'
+        div_total = soup.find('div', class_='v7list-subheader__result-text')
+        # Find all span elements within that div
+        spans = div_total.find_all('span')
+        # Extract the text from the second span (index 1 as indexing starts from 0)
+        if len(spans) > 1:  # Ensure there are at least 2 spans
+            total_amount = spans[1].text
+            print(total_amount)  # This will output '4' based on the example HTML
+        else:
+            print("Not enough spans found")
+                # Find the div with class 'result-status'
 
-            # Adding retries and a longer timeout for each page load
+        # Calculate the number of pages (assuming 100 items per page)
+        pages_qty = math.ceil(int(total_amount) / 20)
+        
+        self.logger.info(f'Total Pages To Scrape: {pages_qty}')
+
+        # Parse the URL and query parameters
+        parsed_url = urllib.parse.urlparse(response.url)
+        query_params = dict(urllib.parse.parse_qsl(parsed_url.query))
+
+        # Loop through all pages and update the 'p' (page) query parameter
+        for i in range(1, pages_qty + 1):
+            query_params['pg'] = i  # Update the 'p' (page) query parameter
+            new_query_string = urllib.parse.urlencode(query_params)
+            page_url = urllib.parse.urlunparse(
+                parsed_url._replace(query=new_query_string)
+            )
+
+            self.logger.info(f"Fetching page {i} for category {response.meta['category_name']} - {page_url}")
+            
             yield scrapy.Request(
                 url=page_url,
                 meta={
                     'playwright': True,
                     'playwright_page_methods': [
-                        PageMethod("wait_for_selector", "li.standard-template"),
+                        PageMethod("wait_for_selector", "div.v7list-subheader__result-text"),
                     ],
-                    'category_name': response.meta['category_name'],
+                    'category_name': response.meta['category_name']
                 },
                 callback=self.parse_units,
-                errback=self.handle_error,
                 dont_filter=True
             )
-        
-    
+
     def parse_units(self, response):
+        # This is where you can parse the data from each page
+        self.logger.info(f"Processing units for page: {response.url}")
         soup = BeautifulSoup(response.text, 'lxml')
-        units = soup.find_all('li', class_='standard-template')
+        units = soup.find_all('li', class_='v7list-results__item')
+
+
 
         for unit in units:
-            unit_title = unit.find('div', class_='h3 unit-title').find('a').text.strip()
-            unit_title_text = unit_title.split()
+            companyAndBrand = unit.find('span', class_='vehicle-heading__name').text
 
-            unit_year = unit_title_text[1]
-
-            manufacturer = None
-            for manuf in manufacturer_list:
-                if manuf in unit_title:
-                    manufacturer = manuf
-                    break  # Stop at the first match
-
-            if not manufacturer:
-                manufacturer = "Unknown"
-
-
-
-            unit_company = manufacturer
-            unit_brand = find_model(unit_title)
-            unit_floor = unit_title_text[-1]
-            unit_stock = unit.find('li', class_='stock-number').text.replace('Stock #:','').strip()
-            unit_location = unit.find('li', class_='location').text.replace('.','').replace(',','').replace('""','').replace('Location:','').strip()
-            unit_category = response.meta['category_name']
+            unit_year = unit.find('span', class_='vehicle-heading__year').text.strip()
+            unit_company = find_company(companyAndBrand)
+            unit_brand = find_model(companyAndBrand)
+            floor = unit.find('span', class_='vehicle-heading__model').text.strip().split()
+            unit_floor = floor[-1]
             try:
-                unit_msrp = unit.find('span', class_='regPriceText').text.replace('$','').replace(',','').strip()
+                unit_msrp = unit.select_one('.vehicle-price--old .vehicle-price__price').text.replace('Retail Price', '').replace('$', '').replace(",", '').replace('Our Price', '').replace('Click for a Quote', '').strip()
             except:
                 unit_msrp = 'N/A'
-            
+
             try:
-                unit_discount = unit.find('span', class_='salePriceText').text.replace('$','').replace(',','').strip()
+                unit_discount = unit.select_one('.vehicle-price--savings .vehicle-price__price').text.replace('Retail Price', '').replace('$', '').replace(",", '').replace('Our Price', '').replace('Click for a Quote', '').strip()
             except:
                 unit_discount = 'N/A'
 
-            with open(f'DailyFiles/Adventure Motorhomes {today}.csv', 'a', newline='') as file:
+            unit_stock = unit.find('li', class_="vehicle-specs__item vehicle-specs__item--stock-number").find('span', class_="vehicle-specs__value").text
+
+            unit_category = response.meta['category_name']
+            unit_location = unit.find('li', class_="vehicle-specs__item vehicle-specs__item--location").find('span', class_="vehicle-specs__value").text
+
+            with open(f'DailyFiles/Southern {today}.csv', 'a', newline='') as file:
                 writer = csv.writer(file, quoting=csv.QUOTE_ALL)
                 if file.tell() == 0:  # If file is empty, write header
                     writer.writerow(['Year','Company','Brand','FloorPlan','Msrp','Discount','Stock-Number','Unit Type','Location','Dealer','Date'])
                 
-                writer.writerow([unit_year,unit_company,unit_brand,unit_floor,unit_msrp,unit_discount,unit_stock,unit_category,unit_location,'Adventure Motorhomes',today])
+                writer.writerow([unit_year,unit_company,unit_brand,unit_floor,unit_msrp,unit_discount,unit_stock,unit_category,unit_location,'Southern',today])
+
+        
+
+
 
     def handle_error(self, failure):
-        self.logger.error(repr(failure))
-        self.logger.info('Retrying request...')
-
+        self.logger.error(f"Request failed: {failure.request.url}")

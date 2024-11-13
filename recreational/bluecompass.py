@@ -209,10 +209,12 @@ manufacturer_list = [
     "OGV Luxury", "OGV Luxury Coach", "Outside Van", "Palomino", "Phoenix Cruiser",
     "Pleasure-Way", "Prime Time RV", "Regency RV", "Remote Vans", "Renegade",
     "Roadtrek", "Storyteller Overland", "Thor Motor Coach", "Tiffin Motorhomes", "Unknown",
-    "Venture RV", "Winnebago", "Winnebago Industries Towables"
+    "Venture RV", "Winnebago", "Winnebago Industries Towables", 'Starcraft', 'inTech RV'
 ]
 
 model_map = {
+    'Autumn Ridge' : 'Autumn Ridge',
+    'GLS' : 'GLS',
     "Valor All-Access" : 'Valor All-Access',
     "access": "Access",
     "ace": "ACE",
